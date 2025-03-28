@@ -1,0 +1,22 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build and binary files
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Ignore system files
+Thumbs.db
+.DS_Store
