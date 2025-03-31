@@ -1,0 +1,32 @@
+name: C# Chatbot CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'  # Change if you're using a different .NET version
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes || (echo "Code is not formatted. Run 'dotnet format' and commit changes." && exit 1)
+
+      - name: Build the chatbot
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests (if any)
+        run: dotnet test --no-restore --verbosity normal
