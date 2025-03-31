@@ -23,7 +23,8 @@ jobs:
         run: dotnet restore
 
       - name: Check code formatting
-        run: dotnet format CyberChatBot.sln --verify-no-changes || (echo "Code is not formatted. Run 'dotnet format CyberChatBot.sln' and commit changes." && exit 1)
+        run: dotnet format CybersecurityChatBot.sln --verify-no-changes || (echo "Code is not formatted. Run 'dotnet format CybersecurityChatBot.sln' and commit changes." && exit 1)
+
         
       - name: Build the chatbot
         run: dotnet build --configuration Release --no-restore
