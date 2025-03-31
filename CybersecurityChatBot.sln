@@ -1,25 +1,32 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35818.85 d17.13
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CybersecurityChatBot", "CybersecurityChatBot.csproj", "{58B5CACD-F85B-46CE-BAF9-EBA02CF3FB9C}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{58B5CACD-F85B-46CE-BAF9-EBA02CF3FB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58B5CACD-F85B-46CE-BAF9-EBA02CF3FB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58B5CACD-F85B-46CE-BAF9-EBA02CF3FB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58B5CACD-F85B-46CE-BAF9-EBA02CF3FB9C}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A3C8CDEC-589A-48AA-A244-2EEBA16781BD}
-	EndGlobalSection
-EndGlobal
+name: C# Chatbot CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'  # Change if you're using a different .NET version
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check code formatting
+        run: dotnet format CybersecurityChatBot.sln --verify-no-changes || (echo "Code is not formatted. Run 'dotnet format CybersecurityChatBot.sln' and commit changes." && exit 1)
+
+      - name: Build the chatbot
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests (if any)
+        run: dotnet test --no-restore --verbosity normal
